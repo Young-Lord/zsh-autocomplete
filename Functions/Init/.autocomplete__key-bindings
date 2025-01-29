@@ -32,8 +32,13 @@ ${0}:bind down-line-or-select down-history '^N' 'j' $key_down[@]
 
 local backtab=$terminfo[kcbt]
 
+## function accept-and-delete-ly { zle accept-line }
+## zle -N 'accept-and-delete-ly'
+## bindkey -M main '^?' accept-and-delete-ly
+## bindkey '^?' accept-and-delete-ly
 menukeys+=(
                 '\t' accept-line
+                # '^?' accept-line
                 '^@' accept-and-hold
                '^[v' accept-and-hold
                 '^_' undo
@@ -42,6 +47,8 @@ menukeys+=(
     "$terminfo[knp]"  forward-word
 )
 bindkey -M menuselect -s "$backtab" "^_$backtab"
+bindkey -M menuselect -s '^?' ' ^?^?'
+## bindkey -M menuselect -s '^?' accept-and-delete-ly
 
 
 main+=(

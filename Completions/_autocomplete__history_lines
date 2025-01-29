@@ -14,9 +14,11 @@ _autocomplete__history_lines() {
       rbuffer="[[:blank:]]##${(j.[[:blank:]]##.)${(@b)words[CURRENT+1,-1]}}"
   lbuffer="$lbuffer${(b)QIPREFIX}"
   rbuffer="${(b)QISUFFIX}$rbuffer"
+  # current command, left oart and right part
 
   local -P query=''
   if [[ -n $words[CURRENT] ]]; then
+    # have something to search
     local -Pa includes=( "${(@s..b)^words[CURRENT]}" )
     local -Pa excludes=( "(|[^${(@s..b)^words[CURRENT]}\n;]#)" )
     local -Pa tokens=( ${(@)excludes:^includes} )
@@ -131,12 +133,17 @@ _autocomplete__history_lines() {
 
   local -Pa suf=()
   if (( $#words[@] == 1 )); then
-    if [[ $WIDGETSTYLE == *-select* ]]; then
+    # if [[ $WIDGETSTYLE == *-select* ]]; then
       # Enable mult-select.
-      suf=( -S ';' -R _autocomplete__history_lines_suffix )
-    else
-      suf=( -qS ' ' )
-    fi
+      # echo 乐
+      # suf=( -S ';' -R _autocomplete__history_lines_suffix )
+#      suf=(  )
+    # else
+      # echo 急
+      # suf=( -qS ' ' )
+    # fi
+    suf=( -R _autocomplete__history_lines_suffix )
+    # suf=( )
   fi
 
   local tag=history-lines
@@ -148,8 +155,11 @@ _autocomplete__history_lines() {
 }
 
 _autocomplete__history_lines_suffix() {
-  [[ $KEYS[-1] != $'\C-@' ]] &&
-      LBUFFER=$LBUFFER[1,-1-$1]
+  # echo $LBUFFER
+  # echo "${KEYS[-1]}" | hexdump | base64
+  
+#  [[ $KEYS[-1] != $'\C-@' ]] &&
+      LBUFFER=$LBUFFER[1,-2]
 }
 
 _autocomplete__history_lines "$@"
